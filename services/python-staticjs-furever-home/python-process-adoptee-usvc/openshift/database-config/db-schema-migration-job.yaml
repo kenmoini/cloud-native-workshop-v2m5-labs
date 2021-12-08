@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbpopulate-petadoption-db
+  labels:
+    app: furever-home-job
+    app.kubernetes.io/name: dbpopulate-petadoption-db
+    app.kubernetes.io/part-of: furever-home
+    component: dbpopulate-job
+  annotations:
+    app.openshift.io/connects-to: >-
+      [{"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","name":"petadoption-db"}]
+spec:
+  parallelism: 1
+  completions: 1
+  activeDeadlineSeconds: 1800
+  backoffLimit: 6
+  template:
+    metadata:
+      name: dbpopulate-petadoption-db
+    spec:
+      containers:
+      - name: dbpopulate-petadoption-db
+        image: mariadb
+        command:
+        - mysql
+        - "-h"
+        - petadoption-db
+        - "-u"
+        - root
+        - "--password=petadoption"
+        - petadoption
+        - "-e"
+        - "CREATE TABLE `pet_adoptees` (`id` int(9) unsigned NOT NULL AUTO_INCREMENT, `name` text NOT NULL, `type` varchar(100) NOT NULL, `city` text NOT NULL, `locale` text NOT NULL, `image_url` text NOT NULL, `created_at` timestamp NOT NULL DEFAULT current_timestamp(), `adopted_at` timestamp NULL, `adopted_by` text NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;CREATE TABLE `adoption_submissions` (`id` int(9) unsigned NOT NULL AUTO_INCREMENT, `user_id` text NOT NULL, `pet_adoptee_id` int(9) unsigned NOT NULL, `pet_name` text NOT NULL, `pet_city` text NOT NULL, `pet_locale` text NOT NULL, `status` text NOT NULL, `created_at` timestamp NOT NULL DEFAULT current_timestamp(), `updated_at` timestamp NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+      restartPolicy: OnFailure

@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: furever-home-frontend-js-overrides
+  labels:
+    app: furever-home-frontend
+    app.kubernetes.io/name: furever-home-frontend
+    app.kubernetes.io/part-of: furever-home-frontend
+    component: configmap
+data:
+  overrides.js: |
+    var API_ENDPOINT = "https://furever-home-backend-a-sso-app-demo.apps.core-ocp.kemo.labs";
+    var JUDGE_ENDPOINT = "https://furever-home-adoption-judge-usvc-a-sso-app-demo.apps.core-ocp.kemo.labs";
+    var PROFILES_ENDPOINT = "https://pet-id-backend-a-sso-app-demo.apps.core-ocp.kemo.labs/app"
+    var USER_ID = 1;
+  functions.js: |
+    console.log('hello from the functions file!');
+  keycloak-shared.js: |
+    function initKeycloak() {
+      const KeycloakServer = "https://rh-sso-a-rh-sso-demo.apps.core-ocp.kemo.labs/auth/";
+      const KeycloakRealm = "petcorp";
+      const KeycloakClientID = "separate-client";
+      let initOptions = {
+        url: KeycloakServer, realm: KeycloakRealm, clientId: KeycloakClientID, onLoad: 'login-required'
+      }
+      var keycloak = new Keycloak(initOptions);
+      keycloak.init({ onLoad: initOptions.onLoad }).then(function(authenticated) {
+        if (authenticated) {
+          username = keycloak.idTokenParsed.preferred_username;
+          token = keycloak.token;
+          USER_ID = keycloak.subject;
+          jQuery(".text-username").text(username);
+          // Query the Profiles API for the Avatar
+          jQuery.ajax(PROFILES_ENDPOINT + '/profile?user_id=' + USER_ID, {
+            success: function (data, status, xhr) {
+              jsonO = JSON.parse(data);
+              jsonI = jsonO.entities[0].profiles[0]
+              jQuery("h1.h4 a.float-right").append('<img src="'+ jsonI.avatar_url +'" alt="Avatar" style="max-width: 60px;max-height: 60px;border-radius: 50%;margin: 0 0 0 1rem;" />');
+            }
+          });
+          loadSubmissions();
+        }
+      }).catch(function(e) {
+        console.log('failed to initialize');
+        console.log(e);
+      });
+    }
+  keycloak.json: |
+    {
+      "realm": "petcorp",
+      "auth-server-url": "https://rh-sso-a-rh-sso-demo.apps.core-ocp.kemo.labs/auth/",
+      "ssl-required": "none",
+      "resource": "separate-client",
+      "public-client": true,
+      "confidential-port": 0
+    }

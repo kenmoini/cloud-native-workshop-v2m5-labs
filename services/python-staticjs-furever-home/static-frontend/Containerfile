@@ -1,0 +1,13 @@
+FROM quay.io/polyglotsystems/ubi8-nginx:latest as BUILDER
+
+USER root
+
+COPY app/ /var/www/html/
+
+RUN npm i \
+ && npm run css-compile \
+ && npx webpack \
+ && chown -R 1001:1001 . \
+ && chmod -R 777 .
+
+USER 1001

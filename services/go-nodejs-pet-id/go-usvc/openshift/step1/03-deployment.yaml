@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pet-id-backend
+  labels:
+    app: pet-id-backend
+    app.kubernetes.io/name: pet-id-backend
+    app.kubernetes.io/part-of: pet-id
+    component: deployment
+  annotations:
+    app.openshift.io/connects-to: >-
+      [{"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","name":"petid-db"}]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pet-id-backend
+      component: deployment
+  template:
+    metadata:
+      labels:
+        app: pet-id-backend
+        component: deployment
+    spec:
+      containers:
+      - name: pet-id-backend
+        imagePullPolicy: Always
+        image: quay.io/kenmoini/pet-id-backend:latest
+        ports:
+        - containerPort: 8080
+          name: pet-id-backend
+        env:
+          - name: KEYCLOAK_SERVER
+            value: http://rh-sso:8080/auth
+          - name: KEYCLOAK_REALM
+            value: someRealm
+          - name: KEYCLOAK_CLIENT_ID
+            value: someClientID
+          - name: THREE_SCALE_SECRET_HEADER
+            value: someSecretHeaderKeyValue
+        volumeMounts:
+          - name: config
+            mountPath: "/opt/app-root/"
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: pet-id-backend-config-yml
+            items:
+              - key: "config.yml"
+                path: "config.yml"

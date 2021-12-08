@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/starter.css">
+    <title>Furever Home - Open Adoptions</title>
+  </head>
+  <body onload="initKeycloak()">
+    <div class="col-md-8 py-5 px-3 mx-auto">
+
+      <header class="pb-3 mb-5 border-bottom">
+        <h1 class="h4">
+          <a href="/" class="d-inline-block align-items-center text-dark text-decoration-none">
+            <span>Furever Home</span>
+          </a>
+          <a href="#" class="float-right">Hello, <span class="text-username">UNDEFINED</span></a>
+        </h1>
+      </header>
+
+      <h1>Open Adoptions</h1>
+      <div class="col-lg-8 px-0 my-5">
+        <p class="lead">Your next best friend is just a click away</p>
+      </div>
+
+      <hr class="my-5 mx-0">
+      <div class="row" id="itemHolder">
+        <!--
+        <div class="col-sm-12 col-md-4">
+          <div class="card my-5" style="cursor: pointer;" id="petID-1">
+            <img src="https://polyglot-academy-pub.nyc3.digitaloceanspaces.com/pet-pals/dog-biggie.jpg" class="card-img-top" alt="Biggie">
+            <div class="card-body">
+              <button class="btn btn-primary" style="border-radius:50%;float: right;font-weight: bold;position: relative;bottom: 2em;font-size: 2em;width: 2.5em;line-height: 2em;text-align: center;">&#9658;</button>
+              <h5 class="card-title">Biggie</h5>
+              <p class="text-muted card-text"><strong>New York, New York</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="card my-5" style="cursor: pointer;" id="petID-12">
+            <img src="https://polyglot-academy-pub.nyc3.digitaloceanspaces.com/pet-pals/dog-biggie.jpg" class="card-img-top" alt="Biggie">
+            <div class="card-body">
+              <button class="btn btn-primary" style="border-radius:50%;float: right;font-weight: bold;position: relative;bottom: 2em;font-size: 2em;width: 2.5em;line-height: 2em;text-align: center;">&#9658;</button>
+              <h5 class="card-title">Biggie</h5>
+              <p class="text-muted card-text"><strong>New York, New York</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="card my-5" style="cursor: pointer;" id="petID-123">
+            <img src="https://polyglot-academy-pub.nyc3.digitaloceanspaces.com/pet-pals/dog-biggie.jpg" class="card-img-top" alt="Biggie">
+            <div class="card-body">
+              <button class="btn btn-primary" style="border-radius:50%;float: right;font-weight: bold;position: relative;bottom: 2em;font-size: 2em;width: 2.5em;line-height: 2em;text-align: center;">&#9658;</button>
+              <h5 class="card-title">Biggie</h5>
+              <p class="text-muted card-text"><strong>New York, New York</strong></p>
+            </div>
+          </div>
+        </div>
+        -->
+      </div>
+
+      <hr class="my-5 mx-0">
+
+      <p class="text-muted">Created with love and belly scratches.</p>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Adopt <span id="petNameAdoptionTitle" class="text-petName"></span>?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Would you like to submit for the adoption of <span id="petNameAdoptionConfirmation" class="text-petName"></span>?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal">Let me think about it</button>
+            <button type="button" class="btn btn-primary">I love them 3000 already</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalFailed" tabindex="-1" role="dialog" aria-labelledby="exampleModalFailedLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white bg-danger">
+          <h5 class="modal-title" id="exampleModalFailedLabel">Adoption failed!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          We don't know why, but the submission for adoption failed - please try again.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalSuccessLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white bg-success">
+          <h5 class="modal-title" id="exampleModalSuccessLabel">Adoption submitted successfully!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Thanks - you should have an answer soon!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-none" id="templates">
+    <div class="col-sm-12 col-md-4 petCard">
+      <div class="card my-5" style="cursor: pointer;" id="petID-1">
+        <img src="https://polyglot-academy-pub.nyc3.digitaloceanspaces.com/pet-pals/dog-biggie.jpg" class="card-img-top" alt="Biggie">
+        <div class="card-body">
+          <button class="btn btn-primary" style="border-radius:50%;float: right;font-weight: bold;position: relative;bottom: 2em;font-size: 2em;width: 2.5em;line-height: 2em;text-align: center;">&#9658;</button>
+          <h5 class="card-title"></h5>
+          <p class="text-muted card-text"><strong></strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script type="text/javascript">
+    API_ENDPOINT = 'https://backend-a-sso-app-demo.apps.core-ocp.kemo.labs'
+  </script>
+  <script type="text/javascript" src="assets/js/container/overrides.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="node_modules/keycloak-js/dist/keycloak.min.js"></script>
+  <script src="assets/js/container/keycloak-shared.js"></script>
+  <script src="assets/js/dist/starter.js"></script>
+  <script type="text/javascript" src="assets/js/container/functions.js"></script>
+
+    <script type="text/javascript">
+      function loadSubmissions() {
+
+        jQuery.ajax(API_ENDPOINT + '/pets', {
+          success: function (data, status, xhr) {
+            jsonO = JSON.parse(data.pets);
+            jsonI = jsonO[0]
+            for(var i = 0; i < jsonI.length; i++) {
+              var obj = jsonI[i];
+              rowID = obj[0];
+              name = obj[1];
+              petType = obj[2];
+              city = obj[3];
+              locale = obj[4];
+              image_url = obj[5];
+              created_at = obj[6];
+              adopted_at = obj[7];
+              adopted_by = obj[8];
+
+              template = jQuery("#templates .petCard").clone();
+              template.find('.card').attr('id', 'petID-' + rowID);
+              template.find('img').attr('alt', name);
+              template.find('img').attr('src', image_url);
+              template.find('.card-title').text(name);
+              template.find('.card-text strong').text(city + ", " + locale);
+              jQuery("#itemHolder").append(template);
+            }
+          }
+        });
+      }
+
+      jQuery(document).on('click', '.card', function(e) {
+        e.preventDefault();
+        petName = jQuery(this).find('img.card-img-top').attr('alt');
+        jQuery('.text-petName').text(petName);
+        jQuery('#exampleModal button.btn-primary').attr('data-pet-id', jQuery(this).attr('id'));
+        jQuery('#exampleModal').modal('show');
+      });
+      jQuery(document).on('click', '#exampleModal button.btn-primary', function(e) {
+        e.preventDefault();
+        petID = jQuery(this).attr('data-pet-id');
+        // Submit to microservice
+        jQuery.ajax({
+          
+          method: "POST",
+          url: JUDGE_ENDPOINT + '/adopt',
+          data: { pet_id: petID.replace("petID-", ""), user_id: USER_ID },
+  
+          success: function (data, status, xhr) {
+            jQuery('#exampleModal').modal('hide');
+            jQuery('#exampleModalSuccess').modal('show');
+            jQuery("#"+petID).parent().remove();
+          },
+          error: function (data, status, xhr) {
+            jQuery('#exampleModal').modal('hide');
+            jQuery('#exampleModalFailed').modal('show');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
