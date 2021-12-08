@@ -175,8 +175,7 @@ spec:
                   image: ' '
               volumes:
                 - name: '${DATABASE_SERVICE_NAME}-data'
-                  persistentVolumeClaim:
-                    claimName: '${DATABASE_SERVICE_NAME}'
+                  'emptyDir:': {}
           triggers:
             - imageChangeParams:
                 automatic: true
