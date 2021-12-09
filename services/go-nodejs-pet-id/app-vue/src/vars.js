@@ -1,7 +1,7 @@
 module.exports = {
-  KeycloakServer: "https://rh-sso-user1-sso.apps.cluster-kk8jn.kk8jn.sandbox647.opentlc.com/auth/",
+  KeycloakServer: "https://RH_SSO_HOST/auth/",
 
-  PetIDServerEndpoint: "https://pet-id-backend-user1-sso.apps.cluster-kk8jn.kk8jn.sandbox647.opentlc.com/app",
+  PetIDServerEndpoint: "https://PET_ID_BACKEND_HOST/app",
 
   KeycloakRealm: "petcorp",
 
